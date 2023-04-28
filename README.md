@@ -1,4 +1,4 @@
-## nerf_video_pipeline
+# a Nerf Video Pipeline
 Takes in video, calculates a NeRF using nerfstudio, and generates novel view videos.
 
 ### Files Included (TODO)
