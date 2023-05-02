@@ -20,13 +20,15 @@ https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 
 https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_local 
 
-### Install Docker Desktop (not Docker Engine)
+### Install Docker Desktop 
+(not Docker Engine)
+
 https://docs.docker.com/desktop/install/ubuntu/
 
 ### Install Nvidia Container Runtime
 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 
-### Instal NeRF Studio
+### Install NeRF Studio
 https://docs.nerf.studio/en/latest/quickstart/installation.html#use-docker-image 
 
 `docker pull dromni/nerfstudio:0.2.1`
