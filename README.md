@@ -10,6 +10,11 @@ Takes in video, calculates a NeRF using nerfstudio, and generates novel view vid
 - Run_All_Notebook.ipynb : Jupyter notebook to optionally run problems
 
 ## Setup Instructions:
+(Ubuntu 20.04 LTS)
+
+### Install latest Nvidia Drivers
+https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#ubuntu-lts
+
 ### Install CUDA 11.8
 https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 
@@ -17,6 +22,9 @@ https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Linux&target
 
 ### Install Docker Desktop (not Docker Engine)
 https://docs.docker.com/desktop/install/ubuntu/
+
+### Install Nvidia Container Runtime
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 
 ### Instal NeRF Studio
 https://docs.nerf.studio/en/latest/quickstart/installation.html#use-docker-image 
