@@ -13,9 +13,6 @@ echo "Note: Previously tested on CUDA 11.8.0-520.61.05-1"
 echo "Note: Previously tested on GCC 9.4.0"
 cat /proc/driver/nvidia/version
 gcc --version
-# Docker Desktop Launch
-echo "Starting Docker Desktop..."
-systemctl --user start docker-desktop
 # Docker Check
 echo "Check Docker Versions"
 echo "Note: Previously tested on Docker 23.0.5, build bc4487a"
