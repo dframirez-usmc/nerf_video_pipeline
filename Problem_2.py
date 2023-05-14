@@ -5,38 +5,38 @@ DOCSTRING
 
 import argparse
 import pathlib
-import nerfstudio_easy
+import nerfstudio_runner as ns
 
-parser = argparse.ArgumentParser(description="Takes 1 mandatory inputs",
+# Parse python args at runtime
+parser = argparse.ArgumentParser(description="Create a video render from a NeRF and a motion path.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('motion', help="Camera motion file location")
+parser.add_argument('config_yml', help="Relative path to config.yml NeRF model")
+parser.add_argument('-m', '--motion',
+                    default="camera_path.json", 
+                    help="Camera motion file location")
 #parser.add_argument('model', help="NeRFacto model file location")
 args = parser.parse_args()
 config = vars(args)
 print(config)
 
-# TODO Validate motion file and path
-# TODO Validate model file and path
-# TODO Get NeRFacto model type from model file
+# TODO Validate config.yml file and path
+# TODO Validate motion file
 
 # Get project workspace full path for passing into docker run
 project_path = pathlib.Path(__file__).parent.resolve()
-print("Project Path: "+str(project_path))
+print("Project Full Path: "+str(project_path))
 
-# Initilize nerfstudio stuff for easier execution
-my_nerfstudio = nerfstudio_easy()
+# Initilize nerfstudio_runner for easier execution
+ns_runner = ns.runner(project_path)
 
-# Wipe render/* directory?
-#nerfstudio_easy.cleanup('data')
+# Wipe render/* directory
+# TODO Validate if exists or create
+ns_runner.cleanup('render')
 
-# Setup nerfstudio execution command
-cmd_steps = [['ns-render', '--load-config', 'outputs/config.yml']]
+# Execute nerfstudio process to render new video
+# TODO Test adjustable nerf-type arg
+ns_runner.render(args.config_yml, args.motion)
 
-step_info = 'INFO: Each step of the process can take 30+ minutes to complete successfully.'
+print('Problem 2 script execution complete.')
 
-for step_index in range(len(cmd_steps)):
-    cmd_step = cmd_steps[step_index]
-    print('----------------------------')
-    print(cmd_step)
-    print(step_info)
-    nerfstudio_easy.run(cmd_step)
+# TODO __main__ function

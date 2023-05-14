@@ -1,55 +1,53 @@
 #!/usr/bin/python
-
 """
 DOCSTRING
 """
 
 import argparse
 import pathlib
-import nerfstudio_easy
+import nerfstudio_runner as ns
 import os, shutil
 
-# Parse python runtime args
-parser = argparse.ArgumentParser(description="Takes 2 mandatory inputs",
+# Parse python args at runtime
+parser = argparse.ArgumentParser(description="Create a NeRF from a video recording.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('video', help="Full path to video file")
-parser.add_argument("-t", '--nerf-type', default="nerfacto", help="Define what type of NeRF model")
+parser.add_argument("-t", '--nerf-type', 
+                    default="nerfacto", 
+                    help="Define what type of NeRF model")
 args = parser.parse_args()
 config = vars(args)
 print(config)
 
 # TODO Validate video file and path
-# TODO Validate nerf-type params
+# TODO Validate nerf-type arg
 
 # Get project workspace full path for passing into docker run
 project_path = pathlib.Path(__file__).parent.resolve()
 print("Project Full Path: "+str(project_path))
 
-# Initilize nerfstudio stuff for easier execution
-my_nerfstudio = nerfstudio_easy()
+# Initilize nerfstudio_runner for easier execution
+ns_runner = ns.runner(project_path)
 
 # Wipe data/* directory
-nerfstudio_easy.cleanup('data')
+# TODO Validate if exists or create
+ns_runner.cleanup('data')
 
 # Copy video file to /workspace/data directory
-print('Video Full Path: '+args.video)
+print('Video relative path: '+args.video)
 video_filename = os.path.basename(args.video)
-print('Video File Name: '+video_filename)
 video_data_path = os.path.join(project_path, "data", video_filename)
+print('Video new path: '+video_data_path)
 shutil.copy2(args.video,video_data_path)
+# NOTE Video file will be assumed in /data/ directory for next step 
 
-# Setup nerfstudio execution command
-nerf_type = 'nerfacto'
+# Execute nerfstudio process to convert for nerf training
+ns_runner.video_process(video_filename)
 
-cmd_steps = [['ns-process-data', 'video', '--data', f'data/{video_filename}', '--output-dir', 'data'],
-             ['ns-train', f'{nerf_type}', '--data', 'data'],
-             ['ns-render', '--load-config', 'outputs/config.yml']]
+# Execute nerfstudio process to train nerf model
+# TODO Test adjustable nerf-type arg
+ns_runner.train(args.nerf_type)
 
-step_info = 'WARNING: Each step of the process can take 30+ minutes to complete successfully.'
+print('Problem 1 script execution complete.')
 
-for step_index in range(len(cmd_steps)):
-    cmd_step = cmd_steps[step_index]
-    print('----------------------------')
-    print(cmd_step)
-    print(step_info)
-    nerfstudio_easy.run(cmd_step)
+# TODO __main__ function
