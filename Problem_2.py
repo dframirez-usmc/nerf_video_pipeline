@@ -31,7 +31,7 @@ ns_runner = ns.runner(project_path)
 
 # Wipe render/* directory
 # TODO Validate if exists or create
-ns_runner.cleanup('render')
+ns_runner.cleanup('renders')
 
 # Execute nerfstudio process to render new video
 # TODO Test adjustable nerf-type arg
